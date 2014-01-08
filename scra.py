@@ -5,6 +5,7 @@ import urllib2
 from bs4 import BeautifulSoup
 import json
 import sys
+from time import strftime
 
 count = 0
 
@@ -130,20 +131,26 @@ def gen_favicon(name):
         print e
         return 'NULL'
 
+def is_good(item):
+    for key,val in item.iteritems():
+        if val == '': return False
+    return True
+
 def main():
-    final_arr=[]
     scrape = Scraper()
     arr1 = scrape.freekaamaal()
     arr2 = scrape.indiafreestuff()
     arr3 = scrape.desidime()
     arr = arr1 + arr2 + arr3
     
-    for i in arr:
-        if  i['code'].upper() == i['code']:
-            final_arr.append(i)
-        else:
-            print 'BAD COUPON: purged'
+    # filtering the array according to is_good() function
+    final_arr = filter(lambda item: is_good(item), arr)    
+    #final_arr = [item for item in arr if is_good(item)]
+    
+    #Appending a dummy object at index 0 in final_arr
+    final_arr.insert(0,{'dummy':'%d coupons scraped: time %s'%( len(final_arr),strftime("%Y-%m-%d %H:%M:%S")) } )
 
+    # writing the final_arr to json file
     with open("/home/sauravtom/public_html/coupon.txt", "w") as f:
         f.write(json.dumps(final_arr))
 

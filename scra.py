@@ -10,6 +10,7 @@ from time import strftime
 count = 0
 
 from time import strftime
+from random import randint
 
 class Scraper:
     def freekaamaal(self):
@@ -22,7 +23,9 @@ class Scraper:
         for j in soup.find_all('div',{'class' : 'coupon abstract'} ):
             dict = {}
             name = j.find('a',class_="thumb").get('href')
-            name = name.split('/')[-2][:-4]
+            print name
+            name = name.split('/')[-2] #splitting via /
+            name = name.split('.')[0] #splitting via . [returns bad url for dominos.co.in]
             code = j.find('div',class_="crux").findNext('strong').get_text()
             description = j.find('div',class_="crux").findNext('p').get_text().strip()
             value = 0
@@ -41,6 +44,7 @@ class Scraper:
         for j in soup.find_all('div',{'class' : 'coupon abstract'} ):
             dict = {}
             name = j.find('a',class_="thumb").get('href')
+            print name
             name = name.split('/')[-2]
             code = j.find('div',class_="crux").findNext('strong').get_text()
             description = j.find('div',class_="crux").findNext('p').get_text().strip()
@@ -149,6 +153,7 @@ def main():
     
     #Appending a dummy object at index 0 in final_arr
     final_arr.insert(0,{'dummy':'%d coupons scraped: time %s'%( len(final_arr),strftime("%Y-%m-%d %H:%M:%S")) } )
+    final_arr.insert(randint(3,len(final_arr)-2),{"code": "sauravtom.com", "description": "Upto 25% discount on new domains", "url": "http://www.bigrock.com/?coupon=sauravtom.com", "value": 0, "favicon": "NULL", "name": "bigrock"})
 
     # writing the final_arr to json file
     with open("/home/sauravtom/public_html/coupon.txt", "w") as f:

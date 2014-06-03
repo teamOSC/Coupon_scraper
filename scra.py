@@ -137,7 +137,9 @@ def gen_favicon(name):
 
 def is_good(item):
     for key,val in item.iteritems():
-        if val == '': return False
+        if val == '' or 'Click to see code' in val: 
+            return False 
+    
     return True
 
 def main():
@@ -154,6 +156,7 @@ def main():
     #Appending a dummy object at index 0 in final_arr
     final_arr.insert(0,{'dummy':'%d coupons scraped: time %s'%( len(final_arr),strftime("%Y-%m-%d %H:%M:%S")) } )
     final_arr.insert(randint(3,len(final_arr)-2),{"code": "sauravtom.com", "description": "Upto 25% discount on new domains", "url": "http://www.bigrock.com/?coupon=sauravtom.com", "value": 0, "favicon": "NULL", "name": "bigrock"})
+    final_arr.insert(randint(3,len(final_arr)-2),{"code": "championswimmer.in", "description": "Upto 25% discount on new domains", "url": "http://www.bigrock.com/?coupon=championswimmer.in", "value": 0, "favicon": "NULL", "name": "bigrock"})
 
     # writing the final_arr to json file
     with open("/home/sauravtom/public_html/coupon.txt", "w") as f:

@@ -16,14 +16,14 @@ class Scraper:
     def freekaamaal(self):
         global count
         url='http://freekaamaal.com/coupons/'
-        print 'Now scraping %s '%(url)
+        #print 'Now scraping %s '%(url)
         arr =[]
         soup = BeautifulSoup( urllib2.urlopen(url).read() )
 
         for j in soup.find_all('div',{'class' : 'coupon abstract'} ):
             dict = {}
             name = j.find('a',class_="thumb").get('href')
-            print name
+            #print name
             name = name.split('/')[-2] #splitting via /
             name = name.split('.')[0] #splitting via . [returns bad url for dominos.co.in]
             code = j.find('div',class_="crux").findNext('strong').get_text()
@@ -38,13 +38,13 @@ class Scraper:
         global count
         url='http://coupons.indiafreestuff.in/'
         arr =[]
-        print 'Now scraping %s \n'%(url)
+        #print 'Now scraping %s \n'%(url)
         soup = BeautifulSoup( urllib2.urlopen(url).read() )
         featured = soup.find('div',{'id' : 'topCoupons'})
         for j in soup.find_all('div',{'class' : 'coupon abstract'} ):
             dict = {}
             name = j.find('a',class_="thumb").get('href')
-            print name
+            #print name
             name = name.split('/')[-2]
             code = j.find('div',class_="crux").findNext('strong').get_text()
             description = j.find('div',class_="crux").findNext('p').get_text().strip()
@@ -58,7 +58,7 @@ class Scraper:
     def desidime(self):
         global count
         url='http://www.desidime.com/coupons'
-        print 'Now scraping %s \n'%(url)
+        #print 'Now scraping %s \n'%(url)
 
         dict = {}
         arr = []
@@ -137,9 +137,11 @@ def gen_favicon(name):
 
 def is_good(item):
     for key,val in item.iteritems():
-        if val == '' or 'Click to see code' in val: 
+        if val == '':
             return False 
     
+    if 'Click to see code' in item['code']:
+        return False
     return True
 
 def main():
